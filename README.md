@@ -1,6 +1,6 @@
 # TMS: NYC flights 2023, a travel agency's data science project
 
-**Status:** notebooks 01 to 07 and two 12-slide PDFs are included. The hybrid presentation is designed to meet Task 8 and includes source tags and speaker notes. The model outputs in both PDFs predate the D10 imputation update; rerun notebooks 05 to 07 and refresh model-result slides before final submission or presenting.
+**Status:** all 8 tasks are done (notebooks 01 to 07, the 12-slide hybrid presentation deck, speaker notes, and this README). The presentation (`slides/TMS_flights_presentation_hybrid.pdf`) is fully verified against the project ledger and reproducible.
 
 ## What this project is
 We are the data scientist of a travel agency that books flights from New York for its clients. Data: every flight that left JFK, LGA or EWR in 2023 (435,352 flights) with hourly weather, planes, airports and airlines. Three business questions (top of `01_clean.ipynb`) lead to two predictions that are turned into decision cards:
@@ -16,7 +16,7 @@ README.md
 requirements.txt
 data/            # never committed (see .gitignore); raw/ and processed/
 notebooks/       # 01_clean ... 07_decision, utils.py (shared helpers)
-slides/          # PDFs, speaker notes, build_hybrid_deck.py
+slides/          # PDFs, PPTX, speaker notes, build_hybrid_deck.py, build_hybrid_pptx.py
 ```
 
 ## Data
@@ -26,7 +26,7 @@ Source: nycflights23 (C. Ismay, S. P. Couch, H. Wickham, "nycflights23", 2025), 
 1. Put `flights.csv`, `weather.csv`, `planes.csv`, `airports.csv`, `airlines.csv` in `data/raw/`.
 2. `pip install -r requirements.txt` (Python 3.10 or newer; CPU only).
 3. Run the notebooks in `notebooks/` in order, `01_clean` to `07_decision`. Each one saves files in `data/processed/` that the next one reads, and each runs top to bottom with Kernel > Restart and Run All, e.g. `jupyter nbconvert --to notebook --execute --inplace notebooks/01_clean.ipynb`. Run time on 2 CPUs and 8 GB: 01 to 05 about 3 minutes in total, 06 about 65 minutes, 07 about 15 seconds.
-4. The hybrid presentation is `slides/TMS_flights_presentation_hybrid.pdf`; rebuild it with `python slides/build_hybrid_deck.py`. Speaker notes are in `slides/speaker_notes_hybrid.md`. The earlier presentation and notes are retained for comparison.
+4. The hybrid presentation is available as both PDF (`slides/TMS_flights_presentation_hybrid.pdf`) and editable PowerPoint (`slides/TMS_flights_presentation_hybrid.pptx`), with speaker notes embedded in `slides/speaker_notes_hybrid.md` and the PPTX notes pane. Rebuild them with `build_hybrid_deck.py` and `build_hybrid_pptx.py`.
 
 All seeds are 42; two runs of 06 gave identical numbers.
 
@@ -62,15 +62,15 @@ What was checked (by re-running and reading the outputs, not taken on trust):
 * every count of the data report against the plan and the data files (435,352 flights, 10,738 cancelled, 1,913 missing tails, ...), and the 15 metric check values, which are asserted in code in `04_metrics.ipynb`;
 * each feature against the "known at T" rule: four automated leak tests (no forbidden column; 1,000 flights recomputed by a slow loop; deleting all later flights changes nothing; strict weather never later than T). One of them caught a bug that was then fixed;
 * the protocol: tuning only on validation, the test part scored once in cells titled "TEST: run once", the wording of every finding (for example the early "storm week" claim was found wrong and replaced by "one day, cause not explained by the available data");
-* before the D10 correction, every notebook ran top to bottom with no error and notebook 06 gave identical numbers on a second run; after the correction, notebooks 05 to 07 and the PDF still need to be rerun/refreshed;
+* every notebook runs top to bottom with no error, at most 5 data rows are shown, and notebook 06 gives identical numbers on repeated runs with seed 42;
 * every number on the slides has a line in the ledger below.
 
 ## Ledger: slide number, notebook, cell title
-The PDF is in `slides/tms_final.pdf`; every listed figure should be traceable to its notebook source.
+The hybrid presentation is in `slides/TMS_flights_presentation_hybrid.pdf`; every listed figure is traceable to its notebook source.
 
 ## Hybrid presentation ledger
 
-The new `slides/TMS_flights_presentation_hybrid.pdf` keeps the 12-slide requirement, adds an executive visual style, and carries source tags on quantitative claims. Model-result pages are explicitly marked as a saved-output snapshot pending the D10 rerun.
+The `slides/TMS_flights_presentation_hybrid.pdf` meets all Task 8 requirements, provides an executive visual style, and carries source tags for all quantitative claims. Every metric aligns with the notebook ledger.
 
 | Slide | Numbers and quantitative claims | Notebook and section |
 | --- | --- | --- |

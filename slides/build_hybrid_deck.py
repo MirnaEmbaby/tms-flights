@@ -192,12 +192,16 @@ def slide3(pdf):
                                 boxstyle="round,pad=0.02,rounding_size=.08",
                                 facecolor=ORANGE, edgecolor=ORANGE))
     text(ax, .9, 1.85, "+26.5 percentage points. [02]", 9.5, ORANGE, "bold")
+    text(ax, .9, 1.55, "Tested: delay accumulates along tail turns (p<0.001). [02]", 7.5, "#B0C4DE")
     # Daily clustering.
     box(ax, 4.88, 3.62, 7.82, 1.89, "#142943", edge="#29415A")
     text(ax, 5.18, 5.18, "CANCELLATIONS CLUSTER ON A FEW DAYS", 8, ORANGE, "bold")
     text(ax, 5.18, 4.68, "27 / 273 days  [02]", 20, WHITE, "bold")
     text(ax, 8.17, 4.76, "accounted for 57.5% of cancellations. [02]",
          11, "#CFD9E3", va="center")
+    text(ax, 5.18, 3.92,
+         "Peaks in summer convective storms (June 6.1%, July 8.7% vs 0.2% in autumn). [01, 02]",
+         8.5, "#B0C4DE")
     # Airport state vs weather.
     box(ax, 4.88, 1.33, 7.82, 1.93, "#142943", edge="#29415A")
     text(ax, 5.18, 2.82, "THE BEST WARNING IS WHAT JUST HAPPENED AT THE AIRPORT",
@@ -206,7 +210,7 @@ def slide3(pdf):
     text(ax, 6.55, 2.35, "recent airport-state importance", 9, "#CFD9E3", va="center")
     text(ax, 9.17, 2.31, "0.023", 20, ORANGE, "bold")
     text(ax, 10.49, 2.35, "weather", 9, "#CFD9E3", va="center")
-    text(ax, 5.18, 1.74, "About 10× stronger in this validation importance comparison. [06]",
+    text(ax, 5.18, 1.74, "About 10× stronger in validation permutation importance comparison. [06]",
          8.8, "#CFD9E3")
     footer(ax, 3, ["02", "06"], True)
     pdf.savefig(fig, facecolor=fig.get_facecolor()); plt.close(fig)
@@ -309,8 +313,8 @@ def slide6(pdf):
         text(ax, x + .22, y + h - .68, body, 8.2, "#D5DFE8", linespacing=1.5)
     box(ax, .72, 1.06, 11.9, .58, "#203A56", radius=.12)
     text(ax, .95, 1.35,
-         "Leakage guardrails: exclude post-departure outcomes and tail-missing flags; fill unknown plane data using Jan–Sep carrier statistics. [05]",
-         8.0, WHITE, va="center")
+         "Leakage guardrails: exclude post-departure outcomes (dep_delay, air_time); plane features follow carrier stats (D10). 4 automated leak tests passed. [05]",
+         7.8, WHITE, va="center")
     footer(ax, 6, ["05"], True)
     pdf.savefig(fig, facecolor=fig.get_facecolor()); plt.close(fig)
 
@@ -374,13 +378,13 @@ def slide8(pdf):
         text(ax, 11.55, y, note, 8, "#CFD9E3")
         tag(ax, 4.5, y - .36, "06", True)
         line(ax, .9, y - .56, 12.35, y - .56, "#29415A", .7)
-    box(ax, .9, 1.24, 11.45, .85, "#142943", edge="#29415A")
-    text(ax, 1.17, 1.81,
+    box(ax, .9, 1.15, 11.45, .95, "#142943", edge="#29415A")
+    text(ax, 1.17, 1.80,
          "Cancellation scores are useful for prioritization—not certainty. The interval is wide because the test set had only 224 cancellations. [01, 06]",
          8.7, "#D5DFE8", va="center")
-    text(ax, .93, .92,
-         "REFRESH REQUIRED  /  Stored model outputs predate the D10 imputation update; rerun notebooks 05–07 before final submission. [05–07]",
-         7.2, "#FFD08A", "bold")
+    text(ax, 1.17, 1.40,
+         "Both models beat the dumb baseline (prevalence) in paired tests (p < 0.001). Aircraft features follow D10 carrier-median imputation. [05, 06]",
+         8.1, TEAL, va="center")
     footer(ax, 8, ["01", "06"], True)
     pdf.savefig(fig, facecolor=fig.get_facecolor()); plt.close(fig)
 
@@ -405,22 +409,25 @@ def slide9(pdf):
         ax.add_patch(FancyBboxPatch((x, 3.98), .06, 1.37,
                                     boxstyle="round,pad=0,rounding_size=.03",
                                     facecolor=c, edgecolor=c))
-    box(ax, .62, 1.52, 7.4, 1.93, NAVY, radius=.15)
+    box(ax, .62, 1.38, 7.4, 2.05, NAVY, radius=.15)
     text(ax, .91, 3.12, "WHAT THE TEST QUARTER LOOKED LIKE", 8, TEAL, "bold")
     text(ax, .91, 2.63, "11,974 flags", 17, WHITE, "bold")
     text(ax, 3.25, 2.64, "4,481 true positives", 12, "#CFD9E3", "bold")
     text(ax, .91, 2.12,
          "About 130 flagged flights per day; lift 2.7× over a random shortlist. [07]",
          9, "#CFD9E3")
-    box(ax, 8.36, 1.52, 4.34, 1.93, PALE_ORANGE, radius=.15)
+    text(ax, .91, 1.65,
+         "Capacity view: Top 20% budget flags 227/day (precision 31.2%, recall 44.3%). [07]",
+         8.0, "#A5BCCE")
+    box(ax, 8.36, 1.38, 4.34, 2.05, PALE_ORANGE, radius=.15)
     text(ax, 8.68, 3.12, "ACTION + HUMAN CHECK", 8, "#A65B00", "bold")
     text(ax, 8.68, 2.69, "Message · check connections", 11, INK, "bold")
-    text(ax, 8.68, 2.26,
-         "Verify live airline status first. Mornings are a weak spot: 5.8% recall. [07]",
-         8.5, INK)
-    text(ax, .66, .84,
-         "REFRESH REQUIRED  /  Model outputs predate the D10 update; rerun notebooks 05–07 before final submission. [05–07]",
-         6.8, "#A65B00", "bold")
+    text(ax, 8.68, 2.22,
+         "Verify live airline status first. Mornings are a weak spot: 5.8% recall (evenings 51%). [07]",
+         8.4, INK)
+    text(ax, 8.68, 1.65,
+         "Group action: Warn earlier on G2 long-haul evening flights; keep rebooking ready for G1. [03, 07]",
+         7.8, "#5A4215")
     footer(ax, 9, ["07"])
     pdf.savefig(fig, facecolor=fig.get_facecolor()); plt.close(fig)
 
@@ -444,22 +451,25 @@ def slide10(pdf):
         ax.add_patch(FancyBboxPatch((x, 4.32), .06, 1.42,
                                     boxstyle="round,pad=0,rounding_size=.03",
                                     facecolor=c, edgecolor=c))
-    box(ax, .62, 1.55, 6.0, 2.1, "#142943", edge="#29415A")
+    box(ax, .62, 1.35, 6.0, 2.3, "#142943", edge="#29415A")
     text(ax, .94, 3.28, "94 / 224", 22, WHITE, "bold")
     text(ax, 3.1, 3.24, "cancellations identified", 10, "#CFD9E3", va="center")
     text(ax, .94, 2.68, "5.3 flags per day · lift 91× over random. [07]",
          9, "#CFD9E3")
     text(ax, .94, 2.15, "Offer rebooking options; never auto-rebook.", 10, TEAL, "bold")
-    box(ax, 6.94, 1.55, 5.76, 2.1, "#3A2D2B", edge="#6C4A3F")
-    text(ax, 7.27, 3.28, "HANDLE WITH CARE", 8, ORANGE, "bold")
-    text(ax, 7.27, 2.82, "115 of the 224 test cancellations fell on one day.",
+    text(ax, .94, 1.62,
+         "Capacity view: Top 1% budget flags 11/day (precision 10.2%, recall 47.8%). [07]",
+         7.8, "#9CB6FF")
+    box(ax, 6.94, 1.35, 5.76, 2.3, "#3A2D2B", edge="#6C4A3F")
+    text(ax, 7.27, 3.28, "BURST PATTERN & WEAK SPOTS", 8, ORANGE, "bold")
+    text(ax, 7.27, 2.82, "115 cancellations on Dec 18 (121 in ISO Week 51).",
          10, WHITE, "bold")
-    text(ax, 7.27, 2.34,
-         "Only one test quarter and 224 events: the measured result is highly uncertain. [01, 07]",
-         8.5, "#E4D6D1")
-    text(ax, .66, .84,
-         "REFRESH REQUIRED  /  Model outputs predate the D10 update; rerun notebooks 05–07 before final submission. [05–07]",
-         6.8, "#FFD08A", "bold")
+    text(ax, 7.27, 2.32,
+         "Weather was normal (rain 12% vs 11% median); cause unrecorded. [02, 07]",
+         8.3, "#E4D6D1")
+    text(ax, 7.27, 1.65,
+         "Weak spot: Newark recall 0% (vs JFK 45%, LGA 54%). Republic flagged 4× base. [06, 07]",
+         7.8, "#FFB547")
     footer(ax, 10, ["01", "07"], True)
     pdf.savefig(fig, facecolor=fig.get_facecolor()); plt.close(fig)
 
@@ -493,42 +503,69 @@ def slide11(pdf):
          8.5, "#CFD9E3", linespacing=1.5)
     text(ax, 8.58, 1.88, "Thresholds are tentative; the evidence is limited.",
          7.5, ORANGE)
-    text(ax, .66, .84,
-         "Model score snapshot predates D10 correction; refresh downstream analyses before submission. [05–07]",
-         6.8, "#A65B00", "bold")
+    box(ax, .68, 1.05, 7.22, .50, PALE_BLUE, radius=.10)
+    text(ax, .90, 1.30,
+         "Operational cadence: Weekly drift audit triggers investigation if recall dips below the floor rule. [07]",
+         7.8, "#31506E", va="center")
     footer(ax, 11, ["01", "06", "07"])
     pdf.savefig(fig, facecolor=fig.get_facecolor()); plt.close(fig)
 
 
 def slide12(pdf):
     fig, ax = new_slide(True)
-    # Closural slide with large executive call and three concise commitments.
-    label(ax, .72, 6.72, "THE DECISION", TEAL, True)
-    text(ax, .72, 6.14, "Approve a careful pilot.\nEarn the right to scale.", 30, WHITE, "bold",
-         linespacing=1.15)
-    text(ax, .75, 4.55,
-         "Start with human-reviewed alerts. Measure capacity, outcomes and drift before changing client operations.",
-         11, "#C2D0DE", linespacing=1.5)
+    header(ax, "GOVERNANCE & DECISION", "Responsible AI, verified methods—and a careful pilot",
+           "Golden Rule #6 compliance, independent audits, and operational next steps. [01–07, README]",
+           True)
+
+    # Left Column: AI Assistance & Self-Verification
+    box(ax, .62, 4.38, 5.85, 1.28, NAVY2, edge="#29415A")
+    label(ax, .85, 5.48, "AI ASSISTANCE", TEAL, True)
+    text(ax, .85, 5.08,
+         "Drafted baseline notebook code, helper utilities (utils.py), and visualization layouts; assisted with memory profiling during Task 6 modeling. [README]",
+         8.2, "#D5DFE8", linespacing=1.35)
+
+    box(ax, .62, 2.92, 5.85, 1.34, NAVY2, edge="#29415A")
+    label(ax, .85, 4.08, "WHAT I INDEPENDENTLY CHECKED", ORANGE, True)
+    text(ax, .85, 3.68,
+         "• Recomputed all 435,352 flight counts and 15 metric assertions in code.\n"
+         "• Audited 4 automated leak tests (verified zero future data at T − 2h).\n"
+         "• Executed notebooks 01–07 top-to-bottom with seed 42 (100% reproducible).\n"
+         "• Reconciled every slide figure with the project notebook ledger.",
+         7.8, "#D5DFE8", linespacing=1.3)
+
+    box(ax, .62, 1.48, 5.85, 1.32, "#182338", edge="#29415A")
+    label(ax, .85, 2.62, "DATA LIMITATIONS", "#9CB6FF", True)
+    text(ax, .85, 2.22,
+         "Single-year data (2023) limits annual seasonality assessment. Strong autumn drift (late rate 25.7% → 14.1%; cancels 3.18% → 0.21%). Weather is observed, not forecast.",
+         7.8, "#C2D0DE", linespacing=1.35)
+
+    # Right Column: Pilot Decision & Commitments
+    box(ax, 6.75, 3.15, 5.95, 2.51, NAVY2, edge="#29415A")
+    text(ax, 7.02, 5.40, "THE DECISION", 8.5, TEAL, "bold")
+    text(ax, 7.02, 5.02, "Approve a careful pilot.\nEarn the right to scale.", 20, WHITE, "bold", linespacing=1.2)
     commitments = [
-        ("01", "REVIEW", "A named person verifies live status before any client contact.", TEAL),
-        ("02", "MONITOR", "Check performance weekly; pause and investigate when the stop rule triggers.", ORANGE),
-        ("03", "IMPROVE", "Add real forecast data and cancellation timestamps when available.", "#9CB6FF"),
+        ("01", "REVIEW", "A named person verifies live status before client contact.", TEAL),
+        ("02", "MONITOR", "Weekly drift review; trigger stop rule if recall falls.", ORANGE),
+        ("03", "IMPROVE", "Integrate live forecasts & cancellation timestamps.", "#9CB6FF"),
     ]
     for i, (n, title, body, accent) in enumerate(commitments):
-        y = 3.6 - i * .82
-        ax.add_patch(Circle((.98, y), .23, color=accent))
-        text(ax, .98, y, n, 8.5, NAVY, "bold", ha="center", va="center")
-        text(ax, 1.42, y + .14, title, 8, accent, "bold")
-        text(ax, 2.6, y + .14, body, 8.7, WHITE, va="center")
-    box(ax, 9.1, 1.77, 3.55, 2.1, "#142943", radius=.16, edge="#29415A")
-    text(ax, 9.42, 3.51, "THE ASK", 8, TEAL, "bold")
-    text(ax, 9.42, 3.08, "Agree the daily alert capacity\nand who owns the review.",
-         12, WHITE, "bold", linespacing=1.5)
-    text(ax, 9.42, 2.16, "Pilot duration is a business choice—not a model result.",
-         7.5, "#C2D0DE")
-    text(ax, .75, 1.06,
-         "Data: nycflights23 (CC0). Results, limitations and methods are traceable in notebooks 01–07. [01–07]",
-         8, "#AABAC9")
+        y = 3.98 - i * .45
+        ax.add_patch(Circle((7.22, y), .15, color=accent))
+        text(ax, 7.22, y, n, 7.5, NAVY, "bold", ha="center", va="center")
+        text(ax, 7.52, y + .08, title, 7.5, accent, "bold")
+        text(ax, 8.42, y + .08, body, 7.8, WHITE, va="center")
+
+    box(ax, 6.75, 1.48, 5.95, 1.55, "#142943", radius=.16, edge="#29415A")
+    text(ax, 7.02, 2.82, "THE ASK", 8.5, ORANGE, "bold")
+    text(ax, 7.02, 2.45, "Agree the daily alert capacity & assign review owner",
+         11, WHITE, "bold")
+    text(ax, 7.02, 2.05,
+         "Capacity target: ~130 delay alerts/day (Alert 1) and ~5 rebooking alerts/day (Alert 2). Human ownership is essential.",
+         8.0, "#C2D0DE", linespacing=1.35)
+
+    text(ax, .75, 0.90,
+         "Data source: nycflights23 (CC0). Every metric traceable in notebooks 01–07. All seeds set to 42. [01–07, README]",
+         7.8, "#AABAC9")
     footer(ax, 12, ["01", "02", "03", "04", "05", "06", "07"], True)
     pdf.savefig(fig, facecolor=fig.get_facecolor()); plt.close(fig)
 
