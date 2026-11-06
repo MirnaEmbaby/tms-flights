@@ -1,6 +1,6 @@
 # TMS: NYC flights 2023, a travel agency's data science project
 
-**Status:** notebooks 01 to 07 and the 12-slide PDF are included. D10 was aligned with the execution plan; rerun notebooks 05 to 07 and refresh the deck before using the existing cached model results or presenting.
+**Status:** notebooks 01 to 07 and two 12-slide PDFs are included. The hybrid presentation is designed to meet Task 8 and includes source tags and speaker notes. The model outputs in both PDFs predate the D10 imputation update; rerun notebooks 05 to 07 and refresh model-result slides before final submission or presenting.
 
 ## What this project is
 We are the data scientist of a travel agency that books flights from New York for its clients. Data: every flight that left JFK, LGA or EWR in 2023 (435,352 flights) with hourly weather, planes, airports and airlines. Three business questions (top of `01_clean.ipynb`) lead to two predictions that are turned into decision cards:
@@ -16,7 +16,7 @@ README.md
 requirements.txt
 data/            # never committed (see .gitignore); raw/ and processed/
 notebooks/       # 01_clean ... 07_decision, utils.py (shared helpers)
-slides/          # tms_final.pdf, speaker_notes.md
+slides/          # PDFs, speaker notes, build_hybrid_deck.py
 ```
 
 ## Data
@@ -26,7 +26,7 @@ Source: nycflights23 (C. Ismay, S. P. Couch, H. Wickham, "nycflights23", 2025), 
 1. Put `flights.csv`, `weather.csv`, `planes.csv`, `airports.csv`, `airlines.csv` in `data/raw/`.
 2. `pip install -r requirements.txt` (Python 3.10 or newer; CPU only).
 3. Run the notebooks in `notebooks/` in order, `01_clean` to `07_decision`. Each one saves files in `data/processed/` that the next one reads, and each runs top to bottom with Kernel > Restart and Run All, e.g. `jupyter nbconvert --to notebook --execute --inplace notebooks/01_clean.ipynb`. Run time on 2 CPUs and 8 GB: 01 to 05 about 3 minutes in total, 06 about 65 minutes, 07 about 15 seconds.
-4. The presentation PDF and speaker notes are in `slides/`. The editable slide source/build script is not included.
+4. The hybrid presentation is `slides/TMS_flights_presentation_hybrid.pdf`; rebuild it with `python slides/build_hybrid_deck.py`. Speaker notes are in `slides/speaker_notes_hybrid.md`. The earlier presentation and notes are retained for comparison.
 
 All seeds are 42; two runs of 06 gave identical numbers.
 
@@ -67,6 +67,25 @@ What was checked (by re-running and reading the outputs, not taken on trust):
 
 ## Ledger: slide number, notebook, cell title
 The PDF is in `slides/tms_final.pdf`; every listed figure should be traceable to its notebook source.
+
+## Hybrid presentation ledger
+
+The new `slides/TMS_flights_presentation_hybrid.pdf` keeps the 12-slide requirement, adds an executive visual style, and carries source tags on quantitative claims. Model-result pages are explicitly marked as a saved-output snapshot pending the D10 rerun.
+
+| Slide | Numbers and quantitative claims | Notebook and section |
+| --- | --- | --- |
+| 1 | 435,352 flights; 2-hour warning point; 2 alerts; 1 year | 01 data report; 05 time contract; 06 predictions |
+| 2 | 25.7% of 330,883 training flights; 10,738 cancellations; 3 origins | 01 data report; 05 prediction time |
+| 3 | 13.4% vs 39.9%; +26.5 points; 27 of 273 days; 57.5%; importance 0.228 vs 0.023 | 02 findings; 06 importance |
+| 4 | 57 / 45 / 7 airports; 101,287 / 226,896 / 2,374 flights; 21.2% / 27.8% / 53.1%; silhouette 0.322 | 03 group descriptions and selection |
+| 5 | 25.7% vs 14.1%; cancellation 3.18% vs 0.21%; five metric definitions and full-year checks | 01 data report; 04 metric definitions and checks |
+| 6 | 2-hour prediction point; allowed and excluded feature families | 05 time contract and leak tests |
+| 7 | 222,402 fit; 108,481 validation; 104,469 test; 330,883 final train; 85.9% dumb accuracy | 06 split and baseline |
+| 8 | PR-AUC 0.339 [0.301–0.376] and 0.120 [0.002–0.233]; baselines 0.141 and 0.0021 | 06 final results tables |
+| 9 | 0.597 cutoff; 11.5% flagged; 37.4% precision; 30.5% recall; 11,974 flags; 4,481 true positives; 130/day; lift 2.7× | 07 card 1 |
+| 10 | 0.137 cutoff; 484 flags; 19.4% precision; 42% recall; 94 of 224; 5.3/day; lift 91×; 115 on one day | 01 data report; 07 card 2 |
+| 11 | Drift 25.7% vs 14.1%; 5.8% morning recall; 14% / two-week and 23% / four-week review rules | 01 data report; 06 error analysis; 07 card monitoring |
+| 12 | Decision steps numbered 01–03; no performance claims | Recommendation based on 02 and 07 |
 
 | Slide | Number | Notebook | Cell title |
 | --- | --- | --- | --- |
