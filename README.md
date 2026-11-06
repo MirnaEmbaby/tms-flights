@@ -1,6 +1,6 @@
 # TMS: NYC flights 2023, a travel agency's data science project
 
-**Status:** all 8 tasks are done (notebooks 01 to 07, slides, this README).
+**Status:** notebooks 01 to 07 and the 12-slide PDF are included. D10 was aligned with the execution plan; rerun notebooks 05 to 07 and refresh the deck before using the existing cached model results or presenting.
 
 ## What this project is
 We are the data scientist of a travel agency that books flights from New York for its clients. Data: every flight that left JFK, LGA or EWR in 2023 (435,352 flights) with hourly weather, planes, airports and airlines. Three business questions (top of `01_clean.ipynb`) lead to two predictions that are turned into decision cards:
@@ -16,7 +16,7 @@ README.md
 requirements.txt
 data/            # never committed (see .gitignore); raw/ and processed/
 notebooks/       # 01_clean ... 07_decision, utils.py (shared helpers)
-slides/          # tms_final.pdf, speaker_notes.md, build_slides.py
+slides/          # tms_final.pdf, speaker_notes.md
 ```
 
 ## Data
@@ -26,7 +26,7 @@ Source: nycflights23 (C. Ismay, S. P. Couch, H. Wickham, "nycflights23", 2025), 
 1. Put `flights.csv`, `weather.csv`, `planes.csv`, `airports.csv`, `airlines.csv` in `data/raw/`.
 2. `pip install -r requirements.txt` (Python 3.10 or newer; CPU only).
 3. Run the notebooks in `notebooks/` in order, `01_clean` to `07_decision`. Each one saves files in `data/processed/` that the next one reads, and each runs top to bottom with Kernel > Restart and Run All, e.g. `jupyter nbconvert --to notebook --execute --inplace notebooks/01_clean.ipynb`. Run time on 2 CPUs and 8 GB: 01 to 05 about 3 minutes in total, 06 about 65 minutes, 07 about 15 seconds.
-4. Slides (optional): `python slides/build_slides.py` rebuilds `slides/tms_final.pdf` from `data/processed/` (needs `playwright` with chromium, not in requirements.txt).
+4. The presentation PDF and speaker notes are in `slides/`. The editable slide source/build script is not included.
 
 All seeds are 42; two runs of 06 gave identical numbers.
 
@@ -40,7 +40,7 @@ All seeds are 42; two runs of 06 gave identical numbers.
 * **D7** Dumb answers: nobody is late / nobody is cancelled (PR-AUC = prevalence). A hour-only baseline is also shown.
 * **D8** Main metric PR-AUC; precision, recall, F1, lift at a cut-off; accuracy is never a headline (the dumb answer is 85.9% accurate).
 * **D9** Prediction 1: logistic regression, histogram gradient boosting, random forest, PyTorch MLP. Prediction 2: logistic regression, gradient boosting, random forest.
-* **D10** A missing tail number always means a cancelled flight (1,913 of 1,913), so plane features of flights with a missing or unknown tail are filled with a random real aircraft of the same airline (seed 42), with no missing flag. The ablation shows no jump (+0.012 against +0.206 for the naive fill).
+* **D10** A missing tail number can reveal cancellation, so no missing-tail flag is used. Missing or unmatched aircraft features are filled with each carrier's Jan-Sep training median (numeric) or mode (categorical); if a carrier has no usable training aircraft, use the corresponding Jan-Sep global statistic. No missing flag is added.
 * **D11** No row is removed in cleaning; problems are fixed or flagged.
 * **D12** `planes.speed` (all 0) is dropped.
 * **D13** One person works alone with AI agents (confirmed by the instructor).
@@ -54,7 +54,7 @@ One year of data from three airports. Weather is observed, not forecast. Train a
 
 ## How AI tools were used
 Claude (Anthropic) was used as a coding and writing assistant, working with me on all eight tasks. It was used for:
-* drafting the notebook code and the shared helper file `utils.py`, and the script that builds the slides;
+* drafting the notebook code and the shared helper file `utils.py`, and preparing the slides;
 * debugging (an out-of-memory crash in notebook 06, a tie bug in the previous-flight feature, a divide-by-zero in the bootstrap of PR-AUC);
 * proposing the plan and the decisions listed above, and writing the explanations and the slide text.
 
@@ -62,11 +62,11 @@ What was checked (by re-running and reading the outputs, not taken on trust):
 * every count of the data report against the plan and the data files (435,352 flights, 10,738 cancelled, 1,913 missing tails, ...), and the 15 metric check values, which are asserted in code in `04_metrics.ipynb`;
 * each feature against the "known at T" rule: four automated leak tests (no forbidden column; 1,000 flights recomputed by a slow loop; deleting all later flights changes nothing; strict weather never later than T). One of them caught a bug that was then fixed;
 * the protocol: tuning only on validation, the test part scored once in cells titled "TEST: run once", the wording of every finding (for example the early "storm week" claim was found wrong and replaced by "one day, cause not explained by the available data");
-* every notebook runs top to bottom with no error, at most 5 data rows are shown, and notebook 06 gives identical numbers on a second run;
+* before the D10 correction, every notebook ran top to bottom with no error and notebook 06 gave identical numbers on a second run; after the correction, notebooks 05 to 07 and the PDF still need to be rerun/refreshed;
 * every number on the slides has a line in the ledger below.
 
 ## Ledger: slide number, notebook, cell title
-Numbers drawn directly from `data/processed/` files by `slides/build_slides.py` are marked (code).
+The PDF is in `slides/tms_final.pdf`; every listed figure should be traceable to its notebook source.
 
 | Slide | Number | Notebook | Cell title |
 | --- | --- | --- | --- |
@@ -83,7 +83,7 @@ Numbers drawn directly from `data/processed/` files by `slides/build_slides.py` 
 | 6 | M1 79.03%, M2 13.84, M3 2.47%, M4 8.41%, M5 22.91%; monthly chart (code) | 04 | 1. The five metrics; 2. The monthly table |
 | 6 | July M3 8.68%, z = 4.1; 76% and 69% | 04 | 4. Unusual months |
 | 7 | 51 columns; leak tests | 05 | 9. The table of new columns; 11. Leak tests |
-| 7 | 0.621, 0.618, 0.606, 0.518; 0.263, 0.251, 0.159, 0.458 | 05 | 12. Ablation |
+| 7 | Feature count and leak-test result | 05 | Feature table; leak tests |
 | 8 | 330,883 / 104,469 flights; 0.1406; 0.0021; 85.9%; 0.1836 | 06 | A1; A5. The dumb answers |
 | 8 | leakage list | 06 | A2. Columns that are removed |
 | 8 | 14.1% vs 25.7% | 01 | 6. Data report (drift row) |
