@@ -53,10 +53,10 @@ All seeds are 42; two runs of 06 gave identical numbers.
 One year of data from three airports. Weather is observed, not forecast. Train and test differ strongly (late 25.7% against 14.1%; cancelled 3.18% against 0.21%). Cancellation precision is low in absolute terms and 115 of the 224 test cancellations fall on one day (18 December, cause not explained by the available data). The group structure of destination airports is weak (silhouette 0.322). Models of the same family cannot be told apart on the test part. Arrival delays are not modelled.
 
 ## How AI tools were used
-Claude (Anthropic) was used as a coding and writing assistant, working with me on all eight tasks. It was used for:
-* drafting the notebook code and the shared helper file `utils.py`, and the script that builds the slides;
+Claude (Anthropic) and Gemini (Google) were used as an assistant, working with me on some tasks. It was used for:
 * debugging (an out-of-memory crash in notebook 06, a tie bug in the previous-flight feature, a divide-by-zero in the bootstrap of PR-AUC);
-* proposing the plan and the decisions listed above, writing the explanations and the slide text, and reviewing the slides against the plan.
+* proposing the plan and the decisions listed above, suggesting the slide structure and text, and reviewing the slides against the plan.
+* writing the README.md file for this project.
 
 What was checked (by re-running and reading the outputs, not taken on trust):
 * every count of the data report against the plan and the data files (435,352 flights, 10,738 cancelled, 1,913 missing tails, ...), and the 15 metric check values, which are asserted in code in `04_metrics.ipynb`;
