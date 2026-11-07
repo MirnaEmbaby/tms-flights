@@ -39,7 +39,7 @@ One year of data from three airports. Weather is observed, not forecast. Train a
 ## How AI tools were used
 Claude (Anthropic) and Gemini (Google) were used as an assistant, working with me on some tasks. It was used for:
 * debugging (an out-of-memory crash in notebook 06, a tie bug in the previous-flight feature, a divide-by-zero in the bootstrap of PR-AUC);
-* proposing the plan and the decisions listed above, suggesting the slide structure and text, and reviewing the slides against the plan.
+* proposing the project plan, suggesting the slide structure and text, and reviewing the slides against the plan.
 * writing the README.md file for this project.
 
 ## Ledger: slide number, notebook, cell title
